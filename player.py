@@ -1,11 +1,11 @@
 import pygame
 from settings import *
-
+import math
 
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, groups, obstacles_sprites):
+    def __init__(self, pos, groups, obstacles_sprites, health = 100):
         super().__init__(groups)
         self.image = pygame.image.load('player.png').convert_alpha()
         self.image = pygame.transform.smoothscale((self.image), (64, 64))
@@ -14,7 +14,7 @@ class Player(pygame.sprite.Sprite):
         self.direction = pygame.math.Vector2()
         self.speed = 5
         self.obstacles_sprites = obstacles_sprites
-
+        self.health = health
 
     def move(self, speed):
         if self.direction.magnitude() != 0:
@@ -60,4 +60,29 @@ class Player(pygame.sprite.Sprite):
     def update(self):
         self.input()
         self.move(self.speed)
+
+    def damage(self, x):
+        self.health -= x
+        if self.health <= 0:
+            self.kill()
+            return True
+        return False
+    
+    def death(self):
+        self.kill()
+        return True
+    
+    def attack(self, x, y):
+        range = None
+        coor = [self.rect.x, self.rect.y]
+        ecoor = [x, y]
+        if(math.dist(coor, ecoor) > range):
+            return True
+        return False
+
+    
+
+
+    
+
 

@@ -1,7 +1,8 @@
 import pygame, sys, time, random, math
 from settings import *
 from levels import Level
-
+from pygame import mixer
+mixer.init()
 
 class Game:
 	
@@ -9,12 +10,12 @@ class Game:
 		pygame.init()
 		self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
 		self.clock = pygame.time.Clock()
-		pygame.display.set_caption("Kingdom Fall")
+		pygame.display.set_caption("Linus Advanture")
 		self.state = 1
 		self.level = Level()
 	
 	def run(self):
-		self.welcome_screen()
+		
 		while True:
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
@@ -22,6 +23,8 @@ class Game:
 					sys.exit()
 				if event.type == pygame.MOUSEBUTTONUP:
 					self.state += 1
+				
+					
 			self.screen.fill(BLACK)
 			self.draw_win()
 			pygame.display.update()
@@ -58,18 +61,31 @@ class Game:
 	
 	def draw_win(self):
 		if self.state == 1:
-			self.first_slide()
+			self.welcome_screen()
 		elif self.state == 2:
-			self.second_slide()
+			self.first_slide()
 		elif self.state == 3:
+			self.second_slide()
+		elif self.state == 4:
 			self.third_slide()
-		else:
+		elif self.state == 5:
 			self.level.run()
-			
+		else:
+			self.ending()
+
+		
+	def ending(self):
+		story_text = STORY_FONT.render(
+			"Victory!", 20, WHITE)
+		self.screen.blit(story_text, (575, 100))
+		mixer.music.load('earth-lyrics.mp3')		
 			
 
 	def welcome_screen(self):
-		pass
+		WELCOME_IMAGE = pygame.image.load("start.png").convert_alpha()
+		WELCOME_IMAGE = pygame.transform.smoothscale((WELCOME_IMAGE), (1280, 720))
+		self.screen.blit(WELCOME_IMAGE, (0, 0))
+
 		
 
 	

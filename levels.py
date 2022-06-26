@@ -3,6 +3,9 @@ import pygame
 from settings import *
 from player import Player
 from tile import Tile
+from mobs import Mob
+
+
 
 class Level:
     def __init__(self):
@@ -10,7 +13,7 @@ class Level:
         self.visible_sprites = YSortCameraGroup()
         self.obstacles_sprites = pygame.sprite.Group()
         self.create_map()
-    
+        
     def create_map(self):
         for rowindex, row in enumerate(game_map):
             for colindex, col in enumerate(row):
@@ -19,8 +22,10 @@ class Level:
                 if col == 'x':
                     Tile((x, y), [self.visible_sprites, self.obstacles_sprites])
                 if col == 'p':
-                    self.player = Player((x, y), [self.visible_sprites], self.obstacles_sprites)
-    
+                    self.player = Player((x, y), [self.visible_sprites], self.obstacles_sprites, 100)
+                #if col == 'm':
+                    #Mob((x, y), 100, 1, 'mobs/mob1.png', 1, [self.visible_sprites, self.obstacles_sprites])
+
     
     
     def run(self):
